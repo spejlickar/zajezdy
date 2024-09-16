@@ -11,4 +11,5 @@ class Fotografie {
         url nullable: false
         popis maxSize: 255, nullable: true
     }
+    
 }

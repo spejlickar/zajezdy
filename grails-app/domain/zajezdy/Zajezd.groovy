@@ -10,4 +10,5 @@ class Zajezd {
         nazev blank: false
         popis maxSize: 255, blank: true
     }
+    
 }
