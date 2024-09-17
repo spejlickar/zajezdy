@@ -4,7 +4,7 @@ import grails.validation.ValidationException
 
 class ZajezdController {
 
-    static allowedMethods = [index: "GET", create: "GET", show:"GET", save: "POST", update: "PUT", delete: "DELETE"]
+    //static allowedMethods = [index: "GET", create: "GET", show:"GET", save: "POST", update: "PUT", delete: "DELETE"]
 
     def index() {
         respond Zajezd.list()
@@ -22,7 +22,7 @@ class ZajezdController {
         }
 
         try {
-            zajezd.save()
+            zajezd.save(flush: true)
         } catch (ValidationException e) {
             respond zajezd.errors, view:'create'
             return
@@ -37,17 +37,16 @@ class ZajezdController {
 
     def edit(Long id) {
         def editZajezd = Zajezd.get(id)
-        render view:"create", model:[zajezd:editZajezd]
+        //render view:"form", model:[zajezd:editZajezd]
+        respond editZajezd
+        
     }
 
     def update(Long id, Zajezd zajezd) {
-        Zajezd existing = Zajezd.get(id)
-        existing.properties = params
-        if (existing.save(flush: true)) {
-            redirect action: "index"
-        } else {
-            render view: "edit", model: [zajezd: existing]
-        }
+        def zajezdStavajici = Zajezd.get(id)
+        zajezdStavajici.setNazev(zajezd.getNazev())
+        zajezdStavajici.save(flush: true)
+       redirect action: "index"
     }
 
     def delete(Long id) {

@@ -12,33 +12,34 @@
 </head>
 
 <body>
-  <g:form method="POST">
+
+  <g:form action="update" method="POST">
     <fieldset class="form">
       <g:field type="text" name="nazev" value="${zajezd?.nazev}" />
       <g:field type="text" name="popis" value="${zajezd?.popis}" />
-      
-      <g:if test="${fotky != null}">
-      <g:set var="fotky" value="${zajezd.fotografie.sort{it.id}}" />
+
+      <g:if test="${zajezd != null}">
+        <g:set var="fotky" value="${zajezd.fotografie.sort{it.id}}" />
         <div class="container mt-4">
-          <g:set var="pocitadlo" value="${0}" />
+          <g:set var="pocitadloFotek" value="${0}" />
           <g:set var="max" value="${fotky.size()}" />
-          <g:while test="${pocitadlo < max}">
+          <g:while test="${pocitadloFotek < max}">
             <div class="row">
-              <g:set var="pocitadloRady" value="${1}" />
-              <g:while test="${(pocitadlo <= max)&&(pocitadloRady++ < 3)}">
-                <g:set var="foto" value="${fotky[pocitadlo++]}" />
+              <g:set var="pocitadloSloupcu" value="${0}" />
+              <g:while test="${(pocitadloFotek < max) && (pocitadloSloupcu++ < 3)}">
+                <g:set var="foto" value="${fotky[pocitadloFotek++]}" />
                 <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card">
+                  <div class="card">
                     <g:img file="${foto.url}" class="card-img-top" alt="${foto.popis}" />
                     <div class="card-body">
-                    <g:field type="text" name="popis" value="${foto.popis}" />
-                      
+                      <g:field type="text" name="popis" value="${foto.popis}" />
+
                     </div>
+                  </div>
                 </div>
-              </div>
               </g:while>
-              </div>
-             </g:while> 
+            </div>
+          </g:while>
         </div>
       </g:if>
       <g:else>
@@ -46,7 +47,7 @@
       </g:else>
     </fieldset>
     <fieldset class="buttons">
-      <g:submitButton name="create" class="save" value="ulož" />
+      <g:submitButton name="save"  value="ulož" />
     </fieldset>
   </g:form>
 

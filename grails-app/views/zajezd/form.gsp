@@ -1,28 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta name="layout" content="main" />
-    <title>Vyvořit zájezdu</title>
 
+<head>
+  <meta name="layout" content="main" />
+  <g:if test="${zajezd.id}">
+    <title>Upravit zájezd</title>
+  </g:if>
+  <g:else>
+    <title>Vyvořit zájezdu</title>
+  </g:else>
 </head>
+
 <body>
-    <g:form method="POST">
-        <fieldset class="form">
-            <g:field type="text" name="nazev" value="${zajezd?.nazev}"/>
-            <g:field type="text" name="popis" value="${zajezd?.popis}"/>  
-            <g:if test="${zajezd?.fotografie !=null}">
-                <g:each in="zajezd.fotografie" var="foto">
-                    <p>${foto.popis}</p>
-                </g:each>  
-            </g:if>
-            <g:else>
-                <p>nejsou fotky</p>
-            </g:else>
-        </fieldset>
-        <fieldset class="buttons">
-            <g:submitButton name="create" class="save" value="ulož" />
-        </fieldset>
-    </g:form>
+
+  <g:form action="save" method="POST">
+    <fieldset class="form">
+      <g:field type="text" name="nazev" value="${zajezd?.nazev}" />
+      <g:field type="text" name="popis" value="${zajezd?.popis}" />
+
+      <g:if test="${zajezd != null}">
+        <g:set var="fotky" value="${zajezd.fotografie.sort{it.id}}" />
+        <div class="container mt-4">
+          <g:set var="pocitadloFotek" value="${0}" />
+          <g:set var="max" value="${fotky.size()}" />
+          <g:while test="${pocitadloFotek < max}">
+            <div class="row">
+              <g:set var="pocitadloSloupcu" value="${0}" />
+              <g:while test="${(pocitadloFotek < max) && (pocitadloSloupcu++ < 3)}">
+                <g:set var="foto" value="${fotky[pocitadloFotek++]}" />
+                <div class="col-lg-4 col-md-6 mb-4">
+                  <div class="card">
+                    <g:img file="${foto.url}" class="card-img-top" alt="${foto.popis}" />
+                    <div class="card-body">
+                      <g:field type="text" name="popis" value="${foto.popis}" />
+
+                    </div>
+                  </div>
+                </div>
+              </g:while>
+            </div>
+          </g:while>
+        </div>
+      </g:if>
+      <g:else>
+        <p>nejsou fotky</p>
+      </g:else>
+    </fieldset>
+    <fieldset class="buttons">
+      <g:submitButton name="save"  value="ulož" />
+    </fieldset>
+  </g:form>
 
 </body>
+
 </html>
