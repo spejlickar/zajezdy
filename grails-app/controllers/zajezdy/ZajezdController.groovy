@@ -5,6 +5,7 @@ import grails.validation.ValidationException
 class ZajezdController {
 
     //static allowedMethods = [index: "GET", create: "GET", show:"GET", save: "POST", update: "PUT", delete: "DELETE"]
+    ZajezdService zajezdService
 
     def index() {
         respond Zajezd.list()
@@ -36,17 +37,32 @@ class ZajezdController {
     }
 
     def edit(Long id) {
-        def editZajezd = Zajezd.get(id)
+        //def editZajezd = Zajezd.get(id)
         //render view:"form", model:[zajezd:editZajezd]
-        respond editZajezd
+        respond Zajezd.get(id)
         
     }
 
-    def update(Long id, Zajezd zajezd) {
-        def zajezdStavajici = Zajezd.get(id)
-        zajezdStavajici.setNazev(zajezd.getNazev())
-        zajezdStavajici.save(flush: true)
-       redirect action: "index"
+    def update(Long id) {
+        //def zajezdStavajici = Zajezd.get(id)
+        //zajezdStavajici.setNazev(zajezd.getNazev())
+        //zajezdStavajici.nazev = params.nazev
+        //zajezdStavajici.save(params)
+       //redirect action: "index"
+       println params
+        def result = zajezdService.updateZajezd(id, params)
+        if (!result.success) {
+            if (result.message) {
+                flash.message = result.message
+                redirect(action: "index")
+            } else {
+                render(view: "edit", model: [zajezdInstance: result.zajezdInstance])
+            }
+            return
+        }
+
+        flash.message = "Zájezd byl úspěšně aktualizován."
+        redirect(action: "index")
     }
 
     def delete(Long id) {

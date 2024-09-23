@@ -19,20 +19,22 @@
       <g:field type="text" name="popis" value="${zajezd?.popis}" />
 
       <g:if test="${zajezd != null}">
-        <g:set var="fotky" value="${zajezd.fotografie.sort{it.id}}" />
+        <g:set var="fotografie" value="${zajezd.fotografie.sort{it.id}}" />
         <div class="container mt-4">
           <g:set var="pocitadloFotek" value="${0}" />
-          <g:set var="max" value="${fotky.size()}" />
+          <g:set var="max" value="${fotografie.size()}" />
           <g:while test="${pocitadloFotek < max}">
             <div class="row">
               <g:set var="pocitadloSloupcu" value="${0}" />
               <g:while test="${(pocitadloFotek < max) && (pocitadloSloupcu++ < 3)}">
-                <g:set var="foto" value="${fotky[pocitadloFotek++]}" />
+                <g:set var="foto" value="${fotografie[pocitadloFotek]}" />
                 <div class="col-lg-4 col-md-6 mb-4">
                   <div class="card">
                     <g:img file="${foto.url}" class="card-img-top" alt="${foto.popis}" />
                     <div class="card-body">
-                      <g:field type="text" name="popis" value="${foto.popis}" />
+                      <g:field type="hidden" name="fotky[${pocitadloFotek}].id" value="${foto.id}"/>
+                      <g:field type="hidden" name="fotky[${pocitadloFotek}].url" value="${foto.url}"/>
+                      <g:field type="text" name="fotky[${pocitadloFotek++}].popis" value="${foto.popis}" />
 
                     </div>
                   </div>
