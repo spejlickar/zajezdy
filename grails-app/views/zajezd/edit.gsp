@@ -13,11 +13,22 @@
 
 <body>
 
-  <g:form action="update" id="${zajezd.id}" method="POST">
+<g:form enctype="multipart/form-data" action="save">
+    
+    
+    <div class="form-group">
+        <label for="photo">Přidat foto:</label>
+        <input type="file" name="photo" class="form-control"/>
+    </div>
+    
+    <g:submitButton name="submit" class="btn btn-primary" value="Uložit"/>
+</g:form>
+
+  <g:form enctype="multipart/form-data" action="update" id="${zajezd.id}" method="POST">
     <fieldset class="form">
       <g:field type="text" name="nazev" value="${zajezd?.nazev}" />
       <g:field type="text" name="popis" value="${zajezd?.popis}" />
-
+      
       <g:if test="${zajezd != null}">
         <g:set var="fotografie" value="${zajezd.fotografie.sort{it.id}}" />
         <div class="container mt-4">
@@ -32,9 +43,10 @@
                   <div class="card">
                     <g:img file="${foto.url}" class="card-img-top" alt="${foto.popis}" />
                     <div class="card-body">
-                      <g:field type="hidden" name="fotky[${pocitadloFotek}].id" value="${foto.id}"/>
-                      <g:field type="hidden" name="fotky[${pocitadloFotek}].url" value="${foto.url}"/>
-                      <g:field type="text" name="fotky[${pocitadloFotek++}].popis" value="${foto.popis}" />
+                      
+                      <g:field type="hidden" name="fotografie[${pocitadloFotek}].id" value="${foto.id}"/>
+                      <g:field type="hidden" name="fotografie[${pocitadloFotek}].url" value="${foto.url}"/>
+                      <g:field type="text" name="fotografie[${pocitadloFotek++}].popis" value="${foto.popis}" />
 
                     </div>
                   </div>

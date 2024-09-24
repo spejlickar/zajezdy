@@ -17,19 +17,12 @@ class ZajezdController {
     }
 
     def save(Zajezd zajezd) {
-        if (zajezd == null) {
-            notFound()
-            return
-        }
+        def photo = request.getFile('photo')  // Přijímá nahraný soubor
+        
+        def result = zajezdService.saveFoto(zajezd, photo)
+    
 
-        try {
-            zajezd.save(flush: true)
-        } catch (ValidationException e) {
-            respond zajezd.errors, view:'create'
-            return
-        }
-
-        redirect action: "index"
+        render view:"edit", model:result.zajezd
     }
 
     def show(Long id) {
@@ -43,7 +36,7 @@ class ZajezdController {
         
     }
 
-    def update(Long id) {
+    def update(Long id, Zajezd zajezd) {
         //def zajezdStavajici = Zajezd.get(id)
         //zajezdStavajici.setNazev(zajezd.getNazev())
         //zajezdStavajici.nazev = params.nazev

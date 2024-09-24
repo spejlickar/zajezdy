@@ -49,6 +49,9 @@ grails:
       codec: html
   controllers:
     defaultScope: singleton
+    upload:
+      maxFileSize: 10MB   # Maximální velikost jednoho souboru
+      maxRequestSize: 10MB # Maximální velikost celého requestu
   gorm:
     autowire: true
 dataSource:
