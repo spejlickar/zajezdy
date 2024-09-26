@@ -5,9 +5,9 @@ import grails.gorm.transactions.Transactional
 @Transactional
 class ZajezdService {
 
-    def saveFoto(Zajezd zajezd, photo){
-        if (photo && !photo.empty) {
-            def storagePath = "/assets/images"
+    def saveFoto(Long id, photo){
+        if ((photo !=null) && !photo.empty) {
+            def storagePath = "c:/grails-app/zajezdy/grails-app/assets/images"
             def filename = UUID.randomUUID().toString() + "-" + photo.originalFilename  // Vytvoření unikátního názvu souboru
             def filePath = new File(storagePath, filename)
             
@@ -16,17 +16,19 @@ class ZajezdService {
                 photo.transferTo(filePath)
 
                 // Uložení URL souboru do domeny databinding
-                zajezd.addToFotografie(id:null,url:filename, popis:"HaHa")
-                zajezdInstance.save(flush: true)
+                //zajezd.addToFotografie(id:null,url:filename, popis:"HaHa")
+                //zajezdInstance.save(flush: true)
                 
             } catch (IOException e) {
-                return [success: false, zajezd: zajezd]
-                
+                return [success: false]
             }
+            def zajezd = Zajezd.get(id)
+            zajezd.addToFotografie(new Fotografie(url:filename, popis:"Haha"))
         } else {
-            return [success: false, zajezd: zajezd]
+            return [success: true]
         }
-        return [success: true, zajezd: zajezd]
+
+        return [success: true]
     }
 
     def updateZajezd(Long id,Map params) {

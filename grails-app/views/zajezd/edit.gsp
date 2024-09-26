@@ -13,7 +13,7 @@
 
 <body>
 
-<g:form enctype="multipart/form-data" action="save">
+<g:form enctype="multipart/form-data" id="${zajezd.id}" action="save">
     
     
     <div class="form-group">
