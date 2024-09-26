@@ -5,7 +5,7 @@ import grails.gorm.transactions.Transactional
 @Transactional
 class ZajezdService {
 
-    def saveFoto(Long id, photo){
+    def saveFoto(Zajezd zajezd, photo){
         if ((photo !=null) && !photo.empty) {
             def storagePath = "c:/grails-app/zajezdy/grails-app/assets/images"
             def filename = UUID.randomUUID().toString() + "-" + photo.originalFilename  // Vytvoření unikátního názvu souboru
@@ -22,8 +22,9 @@ class ZajezdService {
             } catch (IOException e) {
                 return [success: false]
             }
-            def zajezd = Zajezd.get(id)
+
             zajezd.addToFotografie(new Fotografie(url:filename, popis:"Haha"))
+            zajezd.save(flush: true)
         } else {
             return [success: true]
         }

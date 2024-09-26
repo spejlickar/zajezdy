@@ -16,13 +16,14 @@ class ZajezdController {
         render view:"create", model:[zajezd:newZajezd]
     }
 
-    def save(Long id) {
+    def save(Long id, Zajezd zajezd) {
         def photo = request.getFile('photo')  // Přijímá nahraný soubor
         
-        def result = zajezdService.saveFoto(id, photo)
+        def result = zajezdService.saveFoto(zajezd, photo)
 
-        redirect(action: "index")
+        //redirect(action: "index")
         //render view:"edit", model:result.zajezd
+        redirect(action: "index")
     }
 
     def show(Long id) {
